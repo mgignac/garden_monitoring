@@ -1,0 +1,7 @@
+[Unit]
+Description=Pressure Monitoring
+
+[Service]
+Type=oneshot
+ExecStart=/home/pi/software/venv/bin/python /home/pi/software/simpletest.py 
+Restart=no

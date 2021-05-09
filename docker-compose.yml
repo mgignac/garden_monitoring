@@ -1,0 +1,65 @@
+
+version: "3.8"
+
+services:
+  influxdb:
+    restart: unless-stopped
+    image: anberra/influxdb-armv7
+    container_name: "influxdb"
+    ports:
+      - "1234:8086"
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=user
+      - INFLUXDB_ADMIN_PASSWORD=password
+    networks:
+      - web 
+
+  grafana:
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    image: grafana/grafana:latest
+    container_name: "grafana"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./logs/grafana:/var/log/grafana
+      - ./config/grafana/provisioning/:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=user
+      - GF_SECURITY_ADMIN_PASSWORD=password
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_DOMAIN=192.168.0.100
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s/grafana
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_NAME=SCIPP
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    networks:
+      - web
+
+volumes:
+  influxdb-storage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/pi/docker/influxdb 
+  grafana-storage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/pi/docker/grafana
+
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+

@@ -1,0 +1,7 @@
+[Unit]
+Description=Garden Monitoring
+
+[Service]
+Type=oneshot
+ExecStart=/home/pi/software/venv/bin/python /home/pi/software/read.py
+Restart=no

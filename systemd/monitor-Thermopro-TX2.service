@@ -1,0 +1,7 @@
+[Unit]
+Description=Thermopro-TX2
+
+[Service]
+Type=oneshot
+ExecStart=/home/pi/software/rtl_433/build/run.sh
+Restart=no

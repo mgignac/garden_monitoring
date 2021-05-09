@@ -1,0 +1,11 @@
+[Unit]
+Description=Thermopro-TX2
+
+[Timer]
+AccuracySec=1us
+Persistent=true
+OnCalendar=*:*:0/10
+
+[Install]
+WantedBy=timers.target
+

@@ -1,0 +1,11 @@
+[Unit]
+Description=Garden Monitoring
+
+[Timer]
+AccuracySec=1us
+Persistent=true
+OnCalendar=*:*:0/10
+
+[Install]
+WantedBy=timers.target
+
